@@ -1,6 +1,5 @@
 package com.infosupport.ap.exercise.services.responses;
 
-
 public class DetectFaces {
     private String faceId;
 

@@ -1,0 +1,26 @@
+### Running the included Jar ###
+When running the Runnable-Application-Solution, you can override the default properties at the command line.
+By default, it uses the first API key. If you want to use your own, you could run it as:
+
+java -jar Runnable-Application-Solution.jar --cognitiveservice.key=YOUR_KEY --cognitiveservice.persongroup=YOUR_PERSON_GROUP
+
+Command line arguments override anything in the application.properties file with the same name.
+The order in which properties are considered when running is listed here:
+https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html
+
+### Create your own account ###
+See the documentation: https://www.microsoft.com/cognitive-services/en-us/face-api
+Free API is 20 calls/minute.
+
+### Adding your face to the list ###
+- Create a Person within the provided PersonGroup (See api-keys.txt)
+    DOCS: https://westus.dev.cognitive.microsoft.com/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523c
+    You get back a PersonID, you need this next
+- Add a Picture to a Person within a PersonGroup, by sending a POST request with the URL of a picture of yourself.
+    DOCS: https://westus.dev.cognitive.microsoft.com/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039523b
+- You need to "TRAIN" the person group again, so it learns to recognize you based on your picture.
+    DOCS: https://westus.dev.cognitive.microsoft.com/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395249
+
+*Be sure to use the same API-Key and PersonGroup when running the application when you try to detect your face.*
+
+

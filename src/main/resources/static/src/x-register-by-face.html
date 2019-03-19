@@ -48,7 +48,40 @@
     </div>
   </template>
 
-  <script>Polymer({is:"x-register-by-face",properties:{prop1:{type:String,value:"ap-springboot-demo-app"},picture:{type:Object,value:null},modalText:{type:String,value:"Modal"},modalSpinner:{type:Boolean,value:!1},classId:{}},observers:["handleRouteChanged(route)"],handleRouteChanged:function(e){console.log(e);var a=e.path.split("/")[2];console.log(a),this.classId=a},ready:function(){var e=this.$.video;navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&navigator.mediaDevices.getUserMedia({video:!0}).then(function(a){var t=window.URL.createObjectURL(a);console.log(t),e.src=t,e.play()})},tapSnap:function(){var e=this.$.canvas,a=e.getContext("2d"),t=this.$.video;a.drawImage(t,0,0,640,480),a.font="15px Arial",a.fillStyle="red",a.fillText(Date(),10,50);var o=e.toDataURL("image/png"),i=o.replace(/^data:image\/(png|jpg);base64,/,"");this.picture={image:i,classId:this.classId},this.$.imageAjax.generateRequest(),this.modalText="Hold on... checking your face now :-).",this.modalSpinner=!0,this.$.modal.open()},handleResponse:function(e){console.log(e),this.modalText="Welcome "+e.detail.response.studentName,this.modalSpinner=!1}});</script>
+    <script>Polymer({
+        is: "x-register-by-face",
+        properties: {
+            prop1: {type: String, value: "ap-springboot-demo-app"},
+            picture: {type: Object, value: null},
+            modalText: {type: String, value: "Modal"},
+            modalSpinner: {type: Boolean, value: !1},
+            classId: {}
+        },
+        observers: ["handleRouteChanged(route)"],
+        handleRouteChanged: function (e) {
+            console.log(e);
+            var a = e.path.split("/")[2];
+            console.log(a), this.classId = a
+        },
+        ready: function () {
+            var e = this.$.video;
+            navigator.mediaDevices && navigator.mediaDevices.getUserMedia && navigator.mediaDevices.getUserMedia({video: !0}).then(function (a) {
+                console.log(a), e.srcObject = a, e.play()
+            })
+        },
+        tapSnap: function () {
+            var e = this.$.canvas, a = e.getContext("2d"), t = this.$.video;
+            a.drawImage(t, 0, 0, 640, 480), a.font = "15px Arial", a.fillStyle = "red", a.fillText(Date(), 10, 50);
+            var o = e.toDataURL("image/png"), i = o.replace(/^data:image\/(png|jpg);base64,/, "");
+            this.picture = {
+                image: i,
+                classId: this.classId
+            }, this.$.imageAjax.generateRequest(), this.modalText = "Hold on... checking your face now :-).", this.modalSpinner = !0, this.$.modal.open()
+        },
+        handleResponse: function (e) {
+            console.log(e), this.modalText = "Welcome " + e.detail.response.studentName, this.modalSpinner = !1
+        }
+    });</script>
 </dom-module>
 
 </body></html>

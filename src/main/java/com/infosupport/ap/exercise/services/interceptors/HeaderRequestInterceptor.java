@@ -8,9 +8,6 @@ import org.springframework.http.client.support.HttpRequestWrapper;
 
 import java.io.IOException;
 
-/**
- * Created by tomco on 14/03/2017.
- */
 public class HeaderRequestInterceptor implements ClientHttpRequestInterceptor {
 
     private final String headerName;

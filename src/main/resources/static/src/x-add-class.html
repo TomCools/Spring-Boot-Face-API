@@ -43,6 +43,7 @@
             this.$.inputform.addEventListener("iron-form-response", function (e) {
                 t.$.inputform.reset(), t.set("route.path", "/classes-overview")
             });
+
             this.$.inputform.addEventListener("iron-form-error", function (e) {
                 alert("Eek :s, Something is wrong here... maybe input didn't validate correctly?");
             });

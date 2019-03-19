@@ -1,8 +1,5 @@
 package com.infosupport.ap.exercise.services.responses.partial;
 
-/**
- * Created by tomco on 14/03/2017.
- */
 public class IdentificationCandidate {
     private String personId;
     private double confidence;
