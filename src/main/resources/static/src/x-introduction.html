@@ -1,0 +1,50 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/polymer-bootstrap/polymer-bootstrap.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="shared-styles.html">
+
+</head><body><dom-module id="x-introduction">
+  <template>
+    <style include="polymer-bootstrap"></style>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      .test{
+        font-weight: bold;
+      }
+    </style>
+   <div class="card">
+      <h1>Introduction</h1>
+      <p>In this exercise, we will create an Attendance Registration Application. Many classes/courses need an Attendance List, either for legal or administrative purposes.
+      This is a boring task to do by hand, so instead, we are going to do it by using Face Recognition.</p>
+      <p>In the menu to the left, you see 3 pages:
+          </p><ul>
+              <li><strong>Classes Overview</strong>: This is the actual Front-End of our application.</li>
+              <li><strong>Introduction</strong>: The page you are looking at right now :-).</li>
+              <li><strong>Task Guidance</strong>: A page containing all the tasks that need to be executed to get the application to work .</li>
+          </ul>
+      <h2>Notes on Front-End</h2>
+      <p>The front-end has been provided for you. You do not need to change any of the Javascript/HTML to complete the exercise.</p>
+      <p>Since this is actually a Back-End exercise, the quality of the front-end is not perfect. There is little error handling and it is not as responsive as it should be. It is only tested on Google Chrome.
+        <br>If you run into any issues, try to reload the page.
+      </p>
+      <h2>Notes on Face API-keys</h2>
+      <p>The back-end uses API-keys to connect to a Cloud Service. This API has a limit of 10 calls/second and you need 3 calls to do the face detection.
+        Because of this reason, other students may have been assigned a different API-key. <strong>Please, stick to the API-key that is assigned to you.</strong>
+        </p><p><strong>The API-keys will be deleted after a given period, since they are the paid version of the keys.</strong>
+        <br>If you want to continue with this project, you can <a href="https://www.microsoft.com/cognitive-services/en-us/face-api">get your own free key here</a>, but it is limited to 20 calls/minute.
+        </p>
+      <p></p>
+    </div>
+
+  </template>
+
+  <script>Polymer({is:"x-introduction",properties:{classes:{type:Array,value:[]}}});</script>
+</dom-module></body></html>

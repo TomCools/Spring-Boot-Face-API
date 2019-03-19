@@ -1,0 +1,80 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/polymer-bootstrap/polymer-bootstrap.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="shared-styles.html">
+
+</head><body><dom-module id="x-class-details">
+  <template>
+    <style include="polymer-bootstrap"></style>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+       table {
+                width: 50%
+            }
+
+      td {
+                max-width: 200px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                text-align: center;
+            }
+    paper-button.green {
+        background-color: var(--paper-green-500);
+        color: white;
+     }
+
+     paper-button.yellow {
+        background-color: var(--paper-orange-500);
+        color: white;
+     }
+
+     paper-button.red {
+        background-color: var(--paper-red-500);
+        color: white;
+     }
+    </style>
+
+    <iron-ajax id="classAjax" auto="" url="{{classurl}}" handle-as="json" method="GET" on-response="handleClassResponse" debounce-duration="300"></iron-ajax>
+      <iron-ajax id="presenceAjax" auto="" url="{{presenceurl}}" handle-as="json" method="GET" on-response="handlePresenceResponse" debounce-duration="300"></iron-ajax>
+<app-location route="{{route}}" use-hash-as-path></app-location>
+
+   <div class="container-fluid">
+  <div class="row">
+   <div class="card">
+    <div class="col-md-6 col-sm-12 col-lg-7">
+      <h1>Class Details</h1>
+      <ul>
+        <li>Name: {{class.classname}}</li>
+        <li>Lector: {{class.lector}}</li>
+        <li>Topic: {{class.topic}}</li>
+      </ul>
+      <h1>Students</h1>
+      <table class="table table-hover">
+            <tbody><tr>
+              <th>Student Name</th>
+              <th>Arrival</th>
+            </tr>
+      <template is="dom-repeat" items="{{presence}}">
+            <tr>
+              <td>{{item.studentName}}</td>
+              <td>{{item.date}}</td>
+            </tr>
+      </template>
+    </tbody></table>
+    <br>
+     </div>
+    </div>
+  </div></div></template>
+
+  <script>Polymer({is:"x-class-details",properties:{class:{type:Object,value:{}},presence:{type:Array,value:[]},classurl:{type:String},presenceurl:{type:String}},observers:["handleRouteChanged(route)"],created:function(){var e=this;document.addEventListener("page-changed",function(s){e.class={},e.presence=[],e.$.classAjax.generateRequest(),e.$.presenceAjax.generateRequest()})},handleRouteChanged:function(e){console.log(e);var s=e.path.split("/")[2];console.log(s),s&&(this.classurl="http://localhost:8080/api/classes/"+s,this.presenceurl="http://localhost:8080/api/classes/"+s+"/presence")},handleClassResponse:function(e){console.log(e.detail.response),this.class=e.detail.response},handlePresenceResponse:function(e){console.log(e.detail.response);var s=e.detail.response;for(i=0;i<s.length;i++){var a=s[i];a.date=new Date(a.arrival),s[i]=a}this.presence=e.detail.response}});</script>
+</dom-module>
+</body></html>

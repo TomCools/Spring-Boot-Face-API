@@ -1,0 +1,102 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/polymer-bootstrap/polymer-bootstrap.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="shared-styles.html">
+
+</head><body><dom-module id="x-classes-overview">
+  <template>
+    <style include="polymer-bootstrap"></style>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+       table {
+                width: 100%
+            }
+
+      td {
+                max-width: 100px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                text-align: center;
+            }
+    paper-button.green {
+        background-color: var(--paper-green-500);
+        color: white;
+     }
+
+     paper-button.yellow {
+        background-color: var(--paper-orange-500);
+        color: white;
+     }
+
+     paper-button.red {
+        background-color: var(--paper-red-500);
+        color: white;
+     }
+    </style>
+
+    <iron-ajax id="ajax" auto="" url="http://localhost:8080/api/classes" handle-as="json" method="GET" on-response="handleResponse" debounce-duration="300"></iron-ajax>
+    <iron-ajax id="updateAjax" handle-as="json" method="PUT" on-response="handleUpdate" headers="{&quot;content-type&quot;: &quot;application/json&quot;}" debounce-duration="300"></iron-ajax>
+<app-location route="{{route}}" use-hash-as-path></app-location>
+
+
+
+ <div class="container-fluid">
+  <div class="row">
+   <div class="card">
+    <div class="col-md-6 col-sm-12 col-lg-7">
+      <h1>Classes Overview</h1>
+      <table class="table table-hover">
+            <tbody><tr>
+              <th>Class Name</th>
+              <th>Lector</th>
+              <th>Topic</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+      <template is="dom-repeat" items="{{classes}}">
+            <tr>
+              <td>{{item.classname}}</td>
+              <td>{{item.lector}}</td>
+              <td>{{item.topic}}</td>
+              <td>
+                <template is="dom-if" if="{{!item.closed}}">
+                            "OPEN"
+                 </template>
+                 <template is="dom-if" if="{{item.closed}}">
+                            "CLOSED"
+                 </template>
+              </td>
+              <td>
+                 <template is="dom-if" if="{{!item.closed}}">
+                   <paper-button raised="" class="green" on-tap="continue" data-args$="{{item.id}}">To Registration</paper-button>
+                   <paper-button raised="" class="red" on-tap="close" data-args$="{{item.id}}">Close</paper-button>
+                 </template>
+                 <template is="dom-if" if="{{item.closed}}">
+                   <paper-button raised="" class="yellow" on-tap="todetails" data-args$="{{item.id}}">To Details</paper-button>
+                 </template>
+              </td>
+            </tr>
+      </template>
+    </tbody></table>
+    <br>
+    </div>
+        <div class="card-actions">
+          <paper-button raised="" class="green" on-tap="add">Add New Course</paper-button>
+        </div>
+      </div>
+     </div>
+    </div>
+  </template>
+
+  <script>Polymer({is:"x-classes-overview",properties:{classes:{type:Array,value:[]}},created:function(){var e=this;document.addEventListener("page-changed",function(t){e.$.classes=[],e.$.ajax.generateRequest()})},continue:function(e){var t=e.target.getAttribute("data-args");this.set("route.path","/register-by-face/"+t)},todetails:function(e){var t=e.target.getAttribute("data-args");this.set("route.path","/class-details/"+t)},add:function(e){this.set("route.path","/add-class")},close:function(e){var t=e.target.getAttribute("data-args"),s=this.$.updateAjax;s.url="http://localhost:8080/api/classes/"+t;var a=this.classes.filter(function(e){return e.id==t})[0];a.closed=!0,s.body=a,s.generateRequest()},handleResponse:function(e){console.log(e),console.log(e.detail.response),this.classes=e.detail.response},handleUpdate:function(){this.$.ajax.generateRequest()}});</script>
+</dom-module>
+</body></html>

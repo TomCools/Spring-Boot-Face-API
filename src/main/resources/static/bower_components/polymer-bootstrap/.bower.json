@@ -1,0 +1,35 @@
+{
+  "name": "polymer-bootstrap",
+  "authors": [
+    "Horacio Gonzalez <horacio.gonzalez@gmail.com>"
+  ],
+  "version": "0.1.1",
+  "description": "Polymer wrap for Bootstrap",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer"
+  ],
+  "main": "",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "homepage": "https://github.com/LostInBrittany/polymer-bootstrap",
+  "ignore": [],
+  "dependencies": {
+    "bootstrap": "~3.3.6"
+  },
+  "devDependencies": {},
+  "_release": "0.1.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.1.1",
+    "commit": "02a6d5cd564963ed1a8d168dfaee6ae6511a7374"
+  },
+  "_source": "https://github.com/LostInBrittany/polymer-bootstrap.git",
+  "_target": "0.1.1",
+  "_originalSource": "polymer-bootstrap"
+}

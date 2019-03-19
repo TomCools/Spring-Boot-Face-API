@@ -1,0 +1,183 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../bower_components/polymer-bootstrap/polymer-bootstrap.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="shared-styles.html">
+
+</head><body><dom-module id="x-information">
+  <template>
+    <style include="polymer-bootstrap"></style>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      .test{
+        font-weight: bold;
+      }
+    </style>
+    <div class="card">
+    <h1>Task 1: API endpoints for Classes</h1>
+    <p>Create the API endpoints. Hardcode the responses for Task 1</p>
+    <p>
+        </p><ul>
+            <li>POST [/api/classes]: Creates a new Class</li>
+            <li>GET  [/api/classes]: Collects list of Classes</li>
+            <li>GET  [/api/classes/1]: Gets the Class with ID 1 (make sure the ID is a variable!)</li>
+            <li>PUT  [/api/classes/1]: Updates the class with ID 1 (make sure the ID is a variable!), Updating is used for Closing the class</li>
+        </ul>
+    <p></p>
+    <p>The "ClassRegistration" has the following properties which must be returned as JSON</p>
+      <ol>
+            <li>id: ex. 1</li>
+            <li>classname: ex. "Java 4"</li>
+            <li>lector: ex. "Tom Cools"</li>
+            <li>topic: ex. "Spring Boot"</li>
+            <li>closed: ex. true</li>
+        </ol>
+
+    <p class="test">Test: The front-end is functional, yet uses hardcoded responses. Everything but the list of students on the details page should work.</p>
+
+    </div>
+
+     <div class="card">
+    <h1>Task 2: API endpoint for Presence</h1>
+    <p>Presence is the registration of a student being at a class. The class has already been created for you but is empty.
+      Hardcode the response for now.
+    </p>
+    <p>
+        </p><ul>
+            <li>GET [/api/classes/1/presence]: Gets the list of people present in a class. 1 is the ID of a class. (make sure the ID is a variable!)</li>
+        </ul>
+    <p></p>
+    <p>The "Presence" entity has the following properties which must be returned as JSON</p>
+      <ol>
+            <li>id: ex. 1</li>
+            <li>classId: ex. 1</li>
+            <li>studentName: ex. "Tom Cools"</li>
+            <li>arrival: ex. "1489560954" (time since 1970-&gt; use Date class)</li>
+        </ol>
+
+    <p class="test">Test: The front-end is functional, yet uses hardcoded responses.</p>
+    </div>
+
+
+     <div class="card">
+    <h1>Task 3A: Saving Data in Database</h1>
+    <p>So far, we hardcoded our responses. It's time to change this.</p>
+    <p>An in memory database (H2) is ready to be used. Created the needed classes/interfaces so you can persist data to the database.</p>
+    <p>
+        </p><ul>
+            <li>ClassRegistration</li>
+            <li>Presence</li>
+        </ul>
+    <p></p>
+    <p>Remove the hardcoded responses from the endpoints created in Task 1 and 2 and use the database instead.</p>
+
+    <p class="test">Test: The front-end is functional and uses no Hardcoded responses for /api/classes and /api/classes/id/presence.</p>
+    </div>
+
+    <div class="card">
+    <h1>Task 3B: Face Detection API</h1>
+    <p>To enable the face detection, we use the Face API from Microsoft. To use this API, you need a <strong>Key and a PersonGroup</strong>. This will be provided to you by Tom :-).</p>
+    <p>A "CognitiveServices"-class has supplied and the first method (detect) has been implemented as a reference. <strong>Do not change any of the method signatures.</strong></p>
+    <p>The response object for "Identification" has been supplied and fully implemented. The GetPerson-object is empty.</p>
+    <p>API Documentation: <a href="https://www.microsoft.com/cognitive-services/en-us/face-api">https://www.microsoft.com/cognitive-services/en-us/face-api</a></p>
+    <p>
+        </p><ul>
+            <li>Add the given Key and PersonGroup in the static variables KEY and PERSON_GROUP in the "CognitiveServices"-class.</li>
+            <li>Implement the Identify step. This API returns a list. You only return 1 Identification. If no Identification is found, or multiple Identifications are found, throw an Exception.</li>
+            <li>Implement the getPerson step. This API returns a normal Json-Object. Use the method: restTemplate.getForEntity("url",GetPerson.class). Add the correct fields and methods on the GetPerson class so this method directly maps to the correct Java Object.</li>
+        </ul>
+    <p></p>
+    <p>
+        If all methods in the CognitiveServices class are implemented, use them in the ImageResource class.
+        To do a face detection, the following steps are required.
+        </p><ul>
+          <li>Detect a face using the byte[] image. This is provided to you already</li>
+    <li>Using the faceId from the DetectedFace object, call the identify(...) method. You need to wrap the faceId in a List of Strings -&gt; Arrays.asList(faceId).</li>
+          <li>The Identify method returns an Identification which contains a list of IdentificationCandidates. Select the Candidate with the highest confidence.</li>
+          <li>Using the personId of the best Candidate, call the getPerson(personId) method. This method will return the details of that person.</li>
+          <li>Complete the return object so the name of the person and the time of registration (new Date()) is returned to the front-end.</li>
+        </ul>
+    <p></p>
+    <p class="test">Test: The registration page in the front-end returns the detected name.</p>
+    </div>
+
+    <div class="card">
+    <h1>Task 4: Saving and returning Presence</h1>
+    <p>Depending on the order in which you did Tasks 3A and 3B, you may or may not have saved the Presence of a detected student.</p>
+    <p>After detection, create a Presence-object and save it to the database with the repository created in task 3A.</p>
+    <p class="test">Test: The registration page in the front-end returns the detected name and the details page of a class contains the list of detected students.</p>
+    </div>
+
+    <div class="card">
+    <h1>Task 5: Making configuration...configurable</h1>
+    <p>In the CognitiveServices class, we have constants for the KEY and the PERSONGROUP. This is not something we want in our code...</p>
+    <p>Add two properties to the application.properties file
+      </p><ul>
+        <li>cognitiveservice.key=[YOUR_KEY_HERE]</li>
+        <li>cognitiveservice.persongroup=[YOUR_PERSON_GROUP_HERE]</li>
+      </ul>
+    <p>Remove the constant fields KEY and PERSONGROUP from the CognitiveServices class. Use the Spring framework to get the properties from the configuration file and into the class.</p>
+    <p>Documentation: <a href="https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html">can be found here.</a></p>
+    <p class="test">Test: Everything still works, but is now made a bit more configurable.</p>
+    </div>
+
+    <div class="card">
+    <h1>Task 6: Validating Input</h1>
+    <p>Add the following input validation using the validation API:</p>
+      <ul>
+        <li>Class names should be at least 4 characters</li>
+        <li>Class lector should not be NULL</li>
+      </ul>
+    <p>Run this validation when modifying a Class. (POST/PUT)</p>
+    <p class="test">Test: POST-ing/PUT-ing incorrect data gives back an error.</p>
+    </div>
+
+
+    <div class="card">
+    <h1>Extra tasks</h1>
+    <p>These tasks are extra for when you have more time. You can choose any in this list.</p>
+    
+    <h2>Add Emotion</h2>
+    <p>
+      Microsoft Cognitive Services also has an Emotion API. This returns the Emotion of people seen on a picture.
+      You will need to make an account first to retrieve your API Key.
+      </p><p>URL: <a href="https://www.microsoft.com/cognitive-services/en-us/emotion-api">https://www.microsoft.com/cognitive-services/en-us/emotion-api</a></p>
+
+      Call the emotion API and instead of saving just the "studentName" in the <strong>Presence entity</strong>, concatenate it with the biggest emotion.
+      <ol>
+            <li>Before: studentName= "Tom Cools"</li>
+            <li>After: studentName= "Tom Cools - happiness"</li>
+        </ol>
+    <p></p>
+    <p class="test">Test: When scanning a face, it returns the new String "Name - Emotion".</p>
+
+
+    <h2>Change Database</h2>
+    <p>
+      We are currently using an In-Memory database. This is not something we want to ship to production.
+    </p>
+    <p>
+      Change the database to a more permanent storage. You can choose. MySQL, MongoDB, Redis....  
+    </p>
+    <p class="test">Test: Everything still works...but is now saved in a decent database.</p>
+    
+
+    <h2>Add Swagger Documentation</h2>
+    <p>
+      Documenting API's is usefull, but can take quite some work. Enable automatic generation of Swagger Documentation.
+    </p>
+      <p>Details: <a href="http://www.baeldung.com/swagger-2-documentation-for-spring-rest-api">http://www.baeldung.com/swagger-2-documentation-for-spring-rest-api</a></p>
+    <p class="test">Test: Swagger documentation is Available at a certain endpoint/API.</p>
+    </div>
+  </template>
+
+  <script>Polymer({is:"x-information",properties:{classes:{type:Array,value:[]}}});</script>
+</dom-module>
+</body></html>

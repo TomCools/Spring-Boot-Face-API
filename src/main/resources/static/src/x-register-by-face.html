@@ -1,0 +1,54 @@
+<html><head><link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="shared-styles.html">
+
+</head><body><dom-module id="x-register-by-face">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+      paper-button.indigo {
+        background-color: var(--paper-indigo-500);
+        color: white;
+     }
+
+     paper-dialog#modal {
+      width: 600px;
+      height: 150px;
+      overflow: auto;
+    }
+    
+    </style>
+    <app-location route="{{route}}" use-hash-as-path></app-location>
+
+    <iron-ajax id="imageAjax" url="http://localhost:8080/api/image" handle-as="json" body="{{picture}}" method="POST" on-response="handleResponse" headers="{&quot;content-type&quot;: &quot;application/json&quot;}" debounce-duration="300"></iron-ajax>
+
+
+    <div class="card">
+      <h1>Register Students</h1>
+        <center><video id="video" width="640" height="480" autoplay=""></video></center>
+        <center><paper-button raised="" class="indigo" on-tap="tapSnap" disabled="{{modalSpinner}}">Take Picture</paper-button></center>
+        <canvas id="canvas" width="640" height="480" hidden="true"></canvas>
+
+        <paper-dialog id="modal" entry-animation="scale-up-animation" exit-animation="fade-out-animation" no-cancel-on-outside-click="">
+          <p style="font-size: 28px">{{modalText}}</p>
+          <div class="buttons">
+          <paper-button dialog-confirm="" autofocus="">Close</paper-button>
+          </div>
+        </paper-dialog>
+    </div>
+  </template>
+
+  <script>Polymer({is:"x-register-by-face",properties:{prop1:{type:String,value:"ap-springboot-demo-app"},picture:{type:Object,value:null},modalText:{type:String,value:"Modal"},modalSpinner:{type:Boolean,value:!1},classId:{}},observers:["handleRouteChanged(route)"],handleRouteChanged:function(e){console.log(e);var a=e.path.split("/")[2];console.log(a),this.classId=a},ready:function(){var e=this.$.video;navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&navigator.mediaDevices.getUserMedia({video:!0}).then(function(a){var t=window.URL.createObjectURL(a);console.log(t),e.src=t,e.play()})},tapSnap:function(){var e=this.$.canvas,a=e.getContext("2d"),t=this.$.video;a.drawImage(t,0,0,640,480),a.font="15px Arial",a.fillStyle="red",a.fillText(Date(),10,50);var o=e.toDataURL("image/png"),i=o.replace(/^data:image\/(png|jpg);base64,/,"");this.picture={image:i,classId:this.classId},this.$.imageAjax.generateRequest(),this.modalText="Hold on... checking your face now :-).",this.modalSpinner=!0,this.$.modal.open()},handleResponse:function(e){console.log(e),this.modalText="Welcome "+e.detail.response.studentName,this.modalSpinner=!1}});</script>
+</dom-module>
+
+</body></html>

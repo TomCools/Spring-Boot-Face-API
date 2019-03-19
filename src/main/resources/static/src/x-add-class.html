@@ -1,0 +1,53 @@
+<html>
+<head>
+    <link rel="import" href="../bower_components/polymer/polymer.html">
+    <link rel="import" href="../bower_components/paper-input/paper-input.html">
+    <link rel="import" href="../bower_components/paper-button/paper-button.html">
+    <link rel="import" href="../bower_components/iron-form/iron-form.html">
+    <link rel="import" href="../bower_components/app-route/app-location.html">
+    <link rel="import" href="shared-styles.html">
+
+</head>
+<body>
+<dom-module id="x-add-class">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+
+                padding: 10px;
+            }
+        </style>
+        <app-location route="{{route}}" use-hash-as-path></app-location>
+
+        <div class="card">
+            <h1>Create new Class details</h1>
+            <form is="iron-form" id="inputform">
+                <paper-input name="classname" label="Class Name" required=""></paper-input>
+                <paper-input name="lector" label="Lector" required=""></paper-input>
+                <paper-input name="topic" label="Topic" required=""></paper-input>
+                <br>
+                <paper-button raised="" on-tap="submitForm">Submit</paper-button>
+            </form>
+        </div>
+    </template>
+
+    <script>Polymer({
+        is: "x-add-class", submitForm: function () {
+            this.$.inputform.submit()
+        }, ready: function () {
+            this.$.inputform.addEventListener("iron-form-presubmit", function (t) {
+                console.log("Event fire :-)"), this.request.method = "post", this.request.body = this.request.params, this.request.params = {}, this.request.url = "http://localhost:8080/api/classes", this.request.headers = {"content-type": "application/json"}, console.log("Event fire :-)")
+            });
+            var t = this;
+            this.$.inputform.addEventListener("iron-form-response", function (e) {
+                t.$.inputform.reset(), t.set("route.path", "/classes-overview")
+            });
+            this.$.inputform.addEventListener("iron-form-error", function (e) {
+                alert("Eek :s, Something is wrong here... maybe input didn't validate correctly?");
+            });
+        }
+    });</script>
+</dom-module>
+</body>
+</html>
