@@ -15,7 +15,7 @@ public class Program {
     @Bean
     CommandLineRunner runAtStartup() {
         return args -> {
-            System.out.println("I have started succesfully. You can open the Front-end on localhost:8080 and start your exercise.");
+            System.out.println("I have started successfully. You can open the Front-end on localhost:8080 and start your exercise.");
         };
     }
 }
