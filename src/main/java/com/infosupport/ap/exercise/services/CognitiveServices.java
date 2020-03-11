@@ -21,10 +21,10 @@ import java.util.List;
 @Service
 public class CognitiveServices {
 
-    private final static String BASEURL = "https://westus.api.cognitive.microsoft.com/face/v1.0/";
+    private final static String BASEURL = "https://westeurope.api.cognitive.microsoft.com/face/v1.0/";
     private final static String KEY_HEADER = "Ocp-Apim-Subscription-Key";
-    private final static String KEY = "6ff5ae598540491583a5ae9f11029697";
-    private final static String PERSON_GROUP = "ap-java-spring-boot-one";
+    private final static String KEY = "0c78577bab714f53beec5121880c092f";
+    private final static String PERSON_GROUP = "ap-spring-students";
 
     @Autowired
     RestTemplate restTemplate;
