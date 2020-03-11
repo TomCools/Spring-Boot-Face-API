@@ -43,7 +43,7 @@ public class CognitiveServices {
         return response.getBody().stream().findFirst().orElseThrow(() -> new RuntimeException("Multiple faces are not supported"));
     }
 
-    //URL: https://westus.api.cognitive.microsoft.com/face/v1.0/identify
+    //URL: https://westeurope.api.cognitive.microsoft.com/face/v1.0/identify
     public Identification identify(List<String> faceIds) {
         IdentifyFacesRequest request = new IdentifyFacesRequest(PERSON_GROUP, faceIds);
 
@@ -51,7 +51,7 @@ public class CognitiveServices {
         return new Identification();
     }
 
-    //URL https://westus.api.cognitive.microsoft.com/face/v1.0/persongroups/{personGroupId}/persons/{personId}
+    //URL https://westeurope.api.cognitive.microsoft.com/face/v1.0/persongroups/{personGroupId}/persons/{personId}
     public PersonDetails getPerson(String personId) {
         return new PersonDetails();
     }
