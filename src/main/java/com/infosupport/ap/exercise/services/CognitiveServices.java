@@ -18,6 +18,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.String.format;
+
 @Service
 public class CognitiveServices {
 
@@ -32,13 +34,13 @@ public class CognitiveServices {
     public DetectFaces detect(byte[] encodedImage) {
         HttpEntity<?> requestEntity = new HttpEntity<Object>(encodedImage);
 
-        //IF return type is an Array, you need to wrap the return class like this :(
-        ParameterizedTypeReference<List<DetectFaces>> type = new ParameterizedTypeReference<List<DetectFaces>>() {
-        };
+        ResponseEntity<DetectFaces[]> response = restTemplate.postForEntity(format("%sdetect", BASEURL), requestEntity, DetectFaces[].class);
+        DetectFaces[] body = response.getBody();
 
-        ResponseEntity<List<DetectFaces>> response = restTemplate.exchange(BASEURL+"detect", HttpMethod.POST, requestEntity, type);
-        System.out.println(response);
-        return response.getBody().stream().findFirst().orElseThrow(() -> new RuntimeException("Multiple faces are not supported"));
+        if(body == null || body.length != 1) {
+            throw new RuntimeException("This exerices does not support multiple faces or no faces!");
+        }
+        return body[0]; //Just return the first, can be improved (a lot!) if you still have time left.
     }
 
     //URL: https://westeurope.api.cognitive.microsoft.com/face/v1.0/identify
