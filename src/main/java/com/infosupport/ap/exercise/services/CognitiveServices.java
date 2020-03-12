@@ -8,9 +8,7 @@ import com.infosupport.ap.exercise.services.responses.partial.Identification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -38,13 +36,10 @@ public class CognitiveServices {
     public DetectFaces detect(byte[] encodedImage) {
         HttpEntity<?> requestEntity = new HttpEntity<Object>(encodedImage);
 
-        //IF return type is an Array, you need to wrap the return class like this :(
-        ParameterizedTypeReference<List<DetectFaces>> type = new ParameterizedTypeReference<List<DetectFaces>>() {
-        };
+        ResponseEntity<DetectFaces[]> response = restTemplate.postForEntity(format("%sdetect", baseUrl), requestEntity, DetectFaces[].class);
+        DetectFaces[] body = response.getBody();
 
-        ResponseEntity<List<DetectFaces>> response = restTemplate.exchange(format("%sdetect", baseUrl), HttpMethod.POST, requestEntity, type);
-        System.out.println(response);
-        return response.getBody().stream().findFirst().orElseThrow(() -> new RuntimeException("Multiple faces are not supported"));
+        return determineResult(body);
     }
 
     public Identification identify(List<String> faceIds) {
@@ -52,11 +47,10 @@ public class CognitiveServices {
 
         HttpEntity<?> requestEntity = new HttpEntity<Object>(request);
 
-        ParameterizedTypeReference<List<Identification>> type = new ParameterizedTypeReference<List<Identification>>() {
-        };
+        ResponseEntity<Identification[]> response = restTemplate.postForEntity(format("%sidentify", baseUrl), requestEntity, Identification[].class);
+        Identification[] body = response.getBody();
 
-        ResponseEntity<List<Identification>> response = restTemplate.exchange(format("%sidentify", baseUrl), HttpMethod.POST, requestEntity, type);
-        return response.getBody().stream().findFirst().orElseThrow(() -> new RuntimeException("Multiple faces are not supported"));
+        return determineResult(body);
     }
 
     // https://westus.api.cognitive.microsoft.com/face/v1.0/persongroups/{personGroupId}/persons/{personId}
@@ -64,6 +58,13 @@ public class CognitiveServices {
         String url = format("%spersongroups/%s/persons/%s", baseUrl, personGroup, personId);
         ResponseEntity<PersonDetails> entity = restTemplate.getForEntity(url, PersonDetails.class);
         return entity.getBody();
+    }
+
+    private <T> T determineResult(T[] body) {
+        if (body.length != 1) {
+            throw new RuntimeException(String.format("Expected only 1 face, but found: %d", body.length));
+        }
+        return body[0];
     }
 
     @Bean
