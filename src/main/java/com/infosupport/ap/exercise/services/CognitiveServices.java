@@ -30,9 +30,7 @@ public class CognitiveServices {
     RestTemplate restTemplate;
 
     public DetectFaces detect(byte[] encodedImage) {
-        HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.set(KEY_HEADER, KEY);
-        HttpEntity<?> requestEntity = new HttpEntity<Object>(encodedImage,requestHeaders);
+        HttpEntity<?> requestEntity = new HttpEntity<Object>(encodedImage);
 
         //IF return type is an Array, you need to wrap the return class like this :(
         ParameterizedTypeReference<List<DetectFaces>> type = new ParameterizedTypeReference<List<DetectFaces>>() {
